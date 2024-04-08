@@ -60,7 +60,7 @@ public class CompraModel implements CRUD {
         List<Object> listCompras = new ArrayList<>();
 
         try {
-            String sql = "SELECT * FROM compra INNER JOIN cliente on cliente.id = compra.id_cliente INNER JOIN producto on producto.id = compra.id_producto;";
+            String sql = "SELECT * FROM compra INNER JOIN cliente on cliente.id = compra.id_cliente INNER JOIN producto on producto.id = compra.id_producto INNER JOIN tienda on tienda.id = producto.id_tienda;";
 
             PreparedStatement objPrepare = objConnection.prepareStatement(sql);
 
@@ -70,7 +70,7 @@ public class CompraModel implements CRUD {
                 Cliente objCliente = new Cliente();
                 Producto objProducto = new Producto();
                 Compra objCompra = new Compra();
-
+                Tienda objTienda = new Tienda();
 
                 objCompra.setId(objResult.getInt("compra.id"));
                 objCompra.setIdProducto(objResult.getInt("compra.id_producto"));
@@ -88,6 +88,12 @@ public class CompraModel implements CRUD {
                 objProducto.setPrecio(objResult.getDouble("producto.precio"));
                 objProducto.setCantidadProducto(objResult.getInt("producto.stock"));
                 objProducto.setIdTienda(objResult.getInt("producto.id_tienda"));
+
+                objTienda.setId(objResult.getInt("tienda.id"));
+                objTienda.setNombre(objResult.getString("tienda.nombre"));
+                objTienda.setUbicacion(objResult.getString("tienda.ubicacion"));
+
+                objProducto.setObjTienda(objTienda);
 
                 objCompra.setObjProduct(objProducto);
                 objCompra.setObjClient(objCliente);
