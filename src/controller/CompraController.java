@@ -34,6 +34,44 @@ public class CompraController {
         instanceModel().insert(objCompra);
     }
 
+    public static void update(){
+        Object[] options = Utils.listToArray(instanceModel().findAll());
+        Compra compraSelected = (Compra) JOptionPane.showInputDialog(null, "Selecciona una compra a modificar a modificar", "", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        Object[] optionsProduct = Utils.listToArray(ProductoController.instanceModel().findAll());
+        compraSelected.setObjProduct((Producto) JOptionPane.showInputDialog(null, "Selecciona un producto", "", JOptionPane.QUESTION_MESSAGE, null, optionsProduct, optionsProduct[0]));
+
+        compraSelected.setIdProducto(compraSelected.getObjProduct().getId());
+
+        Object[] optionsClient = Utils.listToArray(ClienteController.instanceModel().findAll());
+        compraSelected.setObjClient((Cliente) JOptionPane.showInputDialog(null, "Selecciona un cliente", "", JOptionPane.QUESTION_MESSAGE, null, optionsClient, optionsClient[0]));
+
+        compraSelected.setIdCliente(compraSelected.getObjClient().getId());
+
+        compraSelected.setCantidad(Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva cantidad", compraSelected.getCantidad())));
+
+        instanceModel().update(compraSelected);
+    }
+
+    public static void delete(){
+        int confirm = 1;
+        Object[] options = Utils.listToArray(instanceModel().findAll());
+        Compra productSelected = (Compra) JOptionPane.showInputDialog(null, "Selecciona la compra a eliminar", "", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+
+        if (productSelected == null) {
+            JOptionPane.showMessageDialog(null, "Compra no encontrado");
+        } else {
+            confirm = JOptionPane.showConfirmDialog(null, "Estas seguro de que quieres eliminar la compra: \n" + productSelected.toString2());
+
+            if (confirm == 0) {
+                instanceModel().delete(productSelected);
+            } else {
+                JOptionPane.showMessageDialog(null, "la compra no se elimino");
+            }
+        }
+    }
+
     public static void listAll(){
         String listString = listAll(instanceModel().findAll());
         JOptionPane.showMessageDialog(null, listString);

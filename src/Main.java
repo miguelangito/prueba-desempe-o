@@ -63,8 +63,10 @@ public class Main {
                                 CompraController.create();
                                 break;
                             case "2":
+                                CompraController.update();
                                 break;
                             case "3":
+                                CompraController.delete();
                                 break;
                             case "4":
                                 CompraController.listAll();

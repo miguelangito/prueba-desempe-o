@@ -84,13 +84,21 @@ public class Compra {
 
     @Override
     public String toString() {
-        return  "id: " + id +
+        return  "id: " + id + "\n" +
                 " idCliente: " + idCliente + "\n" +
                 " objCliente: " + objClient + "\n" +
                 " idProducto: " + idProducto + "\n" +
                 " objCompra: " + objProduct + "\n" +
-                " fec_compra: " + fec_compra +
+                " fec_compra: " + fec_compra + "\n" +
                 " cantidad:" + cantidad + "\n"
-                +"------------------------------------------------------------------------------------------------------------------------------------------------";
+                +"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+    }
+
+    public String toString2() {
+        return  "id: " + id +
+                ", idProducto: " + idProducto +
+                ", objProduct: " + objProduct +
+                ", fec_compra: " + fec_compra +
+                ", cantidad: " + cantidad;
     }
 }

@@ -45,12 +45,63 @@ public class CompraModel implements CRUD {
 
     @Override
     public boolean update(Object object) {
-        return false;
+        Connection objConnection = ConfigDB.openConnection();
+
+        Compra objCompra = (Compra) object;
+
+        boolean isUpdated = false;
+
+        try {
+            String sql = "UPDATE compra SET cantidad = ?, id_cliente = ?, id_producto = ? WHERE id = ?";
+
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+
+            objPrepare.setInt(1,objCompra.getCantidad());
+            objPrepare.setInt(2,objCompra.getIdCliente());
+            objPrepare.setInt(3,objCompra.getIdProducto());
+            objPrepare.setInt(4,objCompra.getId());
+
+            int totalRowsAffected = objPrepare.executeUpdate();
+
+            if (totalRowsAffected > 0) {
+                isUpdated = true;
+                JOptionPane.showMessageDialog(null,"La compra se actualizo correctamente");
+            }
+        }catch (SQLException e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        ConfigDB.closeConnection();
+
+        return isUpdated;
     }
 
     @Override
     public boolean delete(Object object) {
-        return false;
+
+        boolean isDeleted = false;
+
+        Connection objConnection = ConfigDB.openConnection();
+
+        try {
+            String sql = "DELETE FROM compra WHERE id = ?";
+
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+
+            objPrepare.setInt(1, ((Compra) object).getId());
+
+            int totalAffectedRows = objPrepare.executeUpdate();
+
+            if (totalAffectedRows > 0) {
+                isDeleted = true;
+                JOptionPane.showMessageDialog(null, "la compra se elimino correctamente");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        ConfigDB.closeConnection();
+
+        return isDeleted;
     }
 
     @Override

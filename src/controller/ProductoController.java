@@ -33,7 +33,7 @@ public class ProductoController {
 
     public static void update(){
         Object[] options = Utils.listToArray(instanceModel().findAll());
-        Producto productSelected = (Producto) JOptionPane.showInputDialog(null, "Selecciona un producto a eliminar", "", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        Producto productSelected = (Producto) JOptionPane.showInputDialog(null, "Selecciona un producto a modificar", "", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
         productSelected.setNombre(JOptionPane.showInputDialog("Ingresa el nuevo nombre del producto"));
         productSelected.setPrecio(Double.parseDouble(JOptionPane.showInputDialog("Ingresa el nuevo precio del producto")));
@@ -43,7 +43,7 @@ public class ProductoController {
 
         productSelected.setIdTienda(productSelected.getObjTienda().getId());
 
-        instanceModel().update(productSelected);
+        instanceModel().update(new Producto());
     }
 
     public static void delete(){
