@@ -4,20 +4,21 @@ import Utils.Utils;
 import entity.Cliente;
 import entity.Compra;
 import entity.Producto;
-import entity.Tienda;
 import model.CompraModel;
+import model.ProductoModel;
 
 import javax.swing.*;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.List;
 
 public class CompraController {
     public static void create() {
 
+        ProductoModel objProductModel = new ProductoModel();
+
         double iva = 1.19;
 
         Compra objCompra = new Compra();
+        Producto objProduct =new Producto();
 
         Object[] optionsCliente = Utils.listToArray(ClienteController.instanceModel().findAll());
         Cliente selectedClient = (Cliente) JOptionPane.showInputDialog(null, "Selecciona un cliente", "", JOptionPane.QUESTION_MESSAGE, null, optionsCliente, optionsCliente[0]);
@@ -26,6 +27,7 @@ public class CompraController {
         Producto selectedProduct = (Producto) JOptionPane.showInputDialog(null, "Selecciona un producto", "", JOptionPane.QUESTION_MESSAGE, null, optionsProduct, optionsProduct[0]);
 
         int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de producto"));
+
 
 
         if (cantidad > selectedProduct.getCantidadProducto()) {
@@ -45,6 +47,9 @@ public class CompraController {
             instanceModel().insert(objCompra);
             double precioCompleto = (objCompra.getObjProduct().getPrecio() * objCompra.getCantidad()) * iva;
             JOptionPane.showMessageDialog(null,objCompra.bill(precioCompleto));
+
+            int cantidadStock = objProduct.getCantidadProducto() - cantidad;
+            instanceModelProduct().updateStock(cantidadStock,objCompra.getObjProduct().getId());
         }
 
 
@@ -108,6 +113,10 @@ public class CompraController {
 
     public static CompraModel instanceModel() {
         return new CompraModel();
+    }
+
+    public static ProductoModel instanceModelProduct(){
+        return new ProductoModel();
     }
 
 }

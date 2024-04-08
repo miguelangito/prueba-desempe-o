@@ -43,7 +43,7 @@ public class ProductoController {
 
         productSelected.setIdTienda(productSelected.getObjTienda().getId());
 
-        instanceModel().update(new Producto());
+        instanceModel().update(productSelected);
     }
 
     public static void delete(){
@@ -64,7 +64,6 @@ public class ProductoController {
             }
         }
     }
-
 
     public static void listAll(){
         String listString = listAll(instanceModel().findAll());

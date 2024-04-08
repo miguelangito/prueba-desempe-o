@@ -53,7 +53,7 @@ public class ProductoModel implements CRUD {
         boolean isUpdated = false;
 
         try {
-            String sql = "UPDATE producto SET nombre = ?, precio = ?, cantidad = ?, id_tienda = ? WHERE id = ?";
+            String sql = "UPDATE producto SET nombre = ?, precio = ?, stock = ?, id_tienda = ? WHERE id = ?";
 
             PreparedStatement objPrepare = objConnection.prepareStatement(sql);
 
@@ -75,6 +75,23 @@ public class ProductoModel implements CRUD {
         ConfigDB.closeConnection();
 
         return isUpdated;
+    }
+
+    public void updateStock(int cantidad, Integer id){
+        Connection objConnection = ConfigDB.openConnection();
+
+        try {
+            String sql = "UPDATE producto SET stock = ? WHERE id = ?;";
+
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+
+            objPrepare.setInt(1,cantidad);
+            objPrepare.setInt(2,id);
+
+            objPrepare.execute();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }
 
     @Override
