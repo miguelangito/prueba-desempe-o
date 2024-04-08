@@ -13,8 +13,10 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class CompraController {
+    public static void create() {
 
-    public static void create(){
+        double iva = 1.19;
+
         Compra objCompra = new Compra();
 
         Object[] optionsCliente = Utils.listToArray(ClienteController.instanceModel().findAll());
@@ -23,18 +25,34 @@ public class CompraController {
         Object[] optionsProduct = Utils.listToArray(ProductoController.instanceModel().findAll());
         Producto selectedProduct = (Producto) JOptionPane.showInputDialog(null, "Selecciona un producto", "", JOptionPane.QUESTION_MESSAGE, null, optionsProduct, optionsProduct[0]);
 
-        int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el valor del producto"));
+        int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de producto"));
 
-        objCompra.setIdCliente(selectedClient.getId());
-        objCompra.setObjClient(selectedClient);
-        objCompra.setIdProducto(selectedProduct.getId());
-        objCompra.setObjProduct(selectedProduct);
-        objCompra.setCantidad(cantidad);
 
-        instanceModel().insert(objCompra);
+        if (cantidad > selectedProduct.getCantidadProducto()) {
+            JOptionPane.showMessageDialog(null, "La cantidad ingresada es mayor al stock, disponible: " + selectedProduct.getCantidadProducto());
+            cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de producto"));
+            if (cantidad > selectedProduct.getCantidadProducto()) {
+                JOptionPane.showMessageDialog(null, "Intentalo de nuevo mas tarde");
+            }
+        } else {
+
+            objCompra.setIdCliente(selectedClient.getId());
+            objCompra.setObjClient(selectedClient);
+            objCompra.setIdProducto(selectedProduct.getId());
+            objCompra.setObjProduct(selectedProduct);
+            objCompra.setCantidad(cantidad);
+
+            instanceModel().insert(objCompra);
+            double precioCompleto = (objCompra.getObjProduct().getPrecio() * objCompra.getCantidad()) * iva;
+            JOptionPane.showMessageDialog(null,objCompra.bill(precioCompleto));
+        }
+
+
+
+
     }
 
-    public static void update(){
+    public static void update() {
         Object[] options = Utils.listToArray(instanceModel().findAll());
         Compra compraSelected = (Compra) JOptionPane.showInputDialog(null, "Selecciona una compra a modificar a modificar", "", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
@@ -53,7 +71,7 @@ public class CompraController {
         instanceModel().update(compraSelected);
     }
 
-    public static void delete(){
+    public static void delete() {
         int confirm = 1;
         Object[] options = Utils.listToArray(instanceModel().findAll());
         Compra productSelected = (Compra) JOptionPane.showInputDialog(null, "Selecciona la compra a eliminar", "", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -72,12 +90,12 @@ public class CompraController {
         }
     }
 
-    public static void listAll(){
+    public static void listAll() {
         String listString = listAll(instanceModel().findAll());
         JOptionPane.showMessageDialog(null, listString);
     }
 
-    public static String listAll(List<Object> list){
+    public static String listAll(List<Object> list) {
         String listString = " -- List -- " + "\n";
 
         for (Object temp : list) {
@@ -88,7 +106,7 @@ public class CompraController {
         return listString;
     }
 
-    public static CompraModel instanceModel(){
+    public static CompraModel instanceModel() {
         return new CompraModel();
     }
 

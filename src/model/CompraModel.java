@@ -153,6 +153,7 @@ public class CompraModel implements CRUD {
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
+
         }
         ConfigDB.closeConnection();
 

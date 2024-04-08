@@ -1,6 +1,5 @@
 package entity;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 public class Compra {
@@ -100,5 +99,11 @@ public class Compra {
                 ", objProduct: " + objProduct +
                 ", fec_compra: " + fec_compra +
                 ", cantidad: " + cantidad;
+    }
+
+    public <valor> String bill(valor valor){
+        return  "nombre producto: " + objProduct.getNombre() + " Precio completo: " +valor + "\n" +
+                " Nombre tienda: " + objProduct.getObjTienda().getNombre() + " Ubicación tienda: " + objProduct.getObjTienda().getUbicacion() + "\n" +
+                " Nombre cliente: " + objClient.getNombre() + " Apellido: " + objClient.getApellido() + " Email: " + objClient.getEmail();
     }
 }
